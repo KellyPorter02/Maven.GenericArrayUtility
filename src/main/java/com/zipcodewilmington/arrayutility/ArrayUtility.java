@@ -44,14 +44,6 @@ public class ArrayUtility<T>  {  // created a generic class here
     }
 
     public T getMostCommonFromMerge(T[] arrayToMerge) {
-//        int arr1Length = inputArray.length;
-//        int arr2Length = arrayToMerge.length;
-//        T[] mergedArray = Arrays.copyOf(inputArray, arr1Length + arr2Length);
-//        int j = 0;
-//        for(int i = inputArray.length; i < mergedArray.length; i++) {
-//            mergedArray[i] = arrayToMerge[j];
-//            j++;
-//        }
         T[] mergedArray = this.mergeArrays(arrayToMerge);
         T mostCommonElement = null;
         int globalCount = 0;
@@ -87,17 +79,29 @@ public class ArrayUtility<T>  {  // created a generic class here
     }
 
     public T[] removeValue(T valueToRemove) {
-
-        return null;
+        Integer numOfOccurrences = this.getNumberOfOccurrences(valueToRemove);
+        Integer newArrayLength = inputArray.length - numOfOccurrences;
+        T[] removedArray = Arrays.copyOf(inputArray, newArrayLength);
+        int j = 0;
+        for (int i = 0; i < inputArray.length; i++) {
+            if (inputArray[i] != valueToRemove) {  // if the element doesn't equal the value to remove, add it to the new array
+                removedArray[j] = inputArray[i];  //  everytime an element gets added, increment j so we move up in the new array one by one
+                j++;                                // the i will increment regardless and check all the els in the 1st array
+            }
+        }
+        return removedArray;
     }
 
 
     public T[] mergeArrays(T[] arrayToMerge) {
         int arr1Length = inputArray.length;
         int arr2Length = arrayToMerge.length;
-        T[] mergedArray = Arrays.copyOf(inputArray, arr1Length + arr2Length);
+        T[] mergedArray = Arrays.copyOf(inputArray, arr1Length + arr2Length); // can't instantiate a generic array of specified length.
+        // can pass an array to Arrays.copyOf method and give new length as 2nd param
+        // will load first array in, rest of the indices are null spots, just have to load the second array
+        // into the back half
         int j = 0;
-        for(int i = inputArray.length; i < mergedArray.length; i++) {
+        for(int i = inputArray.length; i < mergedArray.length; i++) {  // first spot to load will be at the value of the length of the first array
             mergedArray[i] = arrayToMerge[j];
             j++;
         }
